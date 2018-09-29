@@ -280,19 +280,23 @@ export default {
 		},
 		// 搜索菜单
 		filterMenu () {
-			let that = this
-			this.spreadedMenus = []
 			let keyword = this.searchText
 			let menu = JSON.parse(JSON.stringify(this.config.menu))
-			let newMenu = menu.filter(item => {
-				item.sub = item.sub.filter(i => {
-					return i.title.indexOf(keyword) > -1
-				})
-				return item.sub.length > 0 && this.spreadedMenus.push(item.menuId)
-			})
+			let newMenu = menu.filter(i => {
+        return this.filterMenuImp(i, keyword) > -1
+      })
 			this.menuList = newMenu
-
 		},
+    filterMenuImp (item, keyword) {
+      if (item.sub==null || item.sub.length==0){
+        return item.title.indexOf(keyword)
+      } else {
+        item.sub = item.sub.filter(i => {
+          return this.filterMenuImp(i, keyword) > -1
+        })
+        return item.sub.length==0?-1:item.sub.length
+      }
+    },
 		initializeMemu () {
 			this.menuList = JSON.parse(JSON.stringify(this.config.menu))
 		},
