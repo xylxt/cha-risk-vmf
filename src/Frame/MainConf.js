@@ -12,7 +12,8 @@ export default {
 					component: 'hello1',    // 点击菜单打开的组件名称
 					menuId: '1-1' ,          // 索引 (用于识别当前打开的tab,必须唯一，是字符串)
 					sub:[
-						{title: '子菜单1-1-1', component: 'index', menuId: '1-1-1', icon: 'el-icon-menu'},
+						{title: '子菜单1-1-1', component: 'QuickStart', menuId: '1-1-1', icon: 'el-icon-menu'},
+						{title: '子菜单1-1-2', component: 'GenForm', menuId: '1-1-2', icon: 'el-icon-menu'}
 					]
 				},
 				{title: '子菜单1-2', component: 'index', menuId: '1-2'},

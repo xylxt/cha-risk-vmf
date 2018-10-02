@@ -190,7 +190,7 @@
 </template>
 <script>
 import config from './MainConf'
-import NavMenu from '@/Components/NavMenu.vue'
+import NavMenu from '@/Components/NavMenu'
 
 export default {
 	data () {
