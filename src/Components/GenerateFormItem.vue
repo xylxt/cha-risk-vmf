@@ -195,7 +195,6 @@ export default {
       deep: true,
       handler (val) {
         this.models[this.widget.model] = val
-        this.$emit('update:models', { ...this.models, [this.widget.model]: val })
       }
     },
     models: {

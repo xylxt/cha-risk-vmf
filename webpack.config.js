@@ -5,6 +5,7 @@ const CopyWebpackPlugin = require('copy-webpack-plugin')
 const HappyPack = require('happypack')
 const os = require('os')
 const happyThreadPool = HappyPack.ThreadPool({ size: os.cpus().length })
+const apiMocker = require('webpack-api-mocker')
 
 const webpackConfig = {
   devtool: '#cheap-module-eval-source-map',
@@ -29,6 +30,14 @@ const webpackConfig = {
     inline: true,
     port:7120,
     publicPath: '/',
+    before(app){
+      apiMocker(app, path.resolve('./src/mocker/index.js'), {
+        proxy: {
+          '/repos/*': 'https://api.github.com/',
+        },
+        changeHost: true,
+      })
+    }
   },
   plugins: [
 

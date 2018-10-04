@@ -1,4 +1,4 @@
-export default {
+let target = {
   "list": [
     {
       "type": "grid",
@@ -44,7 +44,7 @@ export default {
               "name": "日期选择器",
               "icon": "regular/calendar-alt",
               "options": {
-                "defaultValue": "",
+                "defaultValue": "2018-10-04",
                 "readonly": false,
                 "disabled": false,
                 "editable": true,
@@ -100,17 +100,20 @@ export default {
                 "clearable": false,
                 "placeholder": "",
                 "required": false,
-                "showLabel": false,
+                "showLabel": true,
                 "width": "",
                 "options": [
                   {
-                    "value": "下拉框1"
+                    "value": "0",
+                    "label": "a"
                   },
                   {
-                    "value": "下拉框2"
+                    "value": "1",
+                    "label": "b"
                   },
                   {
-                    "value": "下拉框3"
+                    "value": "2",
+                    "label": "c"
                   }
                 ],
                 "remote": false,
@@ -181,3 +184,44 @@ export default {
     "labelPosition": "left"
   }
 }
+
+let src = {
+  'flag' : 'compact',
+  'cols' : 4,
+  'lists': [
+    {
+    	'type' : 'input',
+    	'name' : '电子邮件',
+    	'model' : 'email',
+    	'dataType' : 'email',
+    	'required' : true
+    },
+    {
+    	'type' : 'date',
+    	'name' : '生日',
+    	'model' : 'birthday',
+    	'defaultValue' : '2018-10-04'
+    },
+    {
+    	'type' : 'rate',
+    	'name' : '自我评级',
+    	'model' : 'level'
+    },
+    {
+    	'type' : 'select',
+    	'name' : '性别',
+    	'model' : 'sex',
+    	'options' : '0:男;1:女'
+    },
+    {
+    	'type' : 'textarea',
+    	'name' : '个人简历',
+    	'model' : 'resume',
+    	'newLine' : true,
+    	'span' : 4
+    }
+  ]
+}
+
+export default {target, src}
+

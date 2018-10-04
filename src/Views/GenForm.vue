@@ -17,7 +17,7 @@
   export default {
     data() {
       return {
-        jsonData: form, // 表单配置中生成的json数据
+        jsonData: form.src, // 表单配置中生成的json数据
         values: {'email':'lixintao@chamc.com.cn'}, // 表单需要显示的表单数据
         remoteFuncs: {
           // 组件配置时配置的远端方法,保持和配置时输入的名称一致
@@ -48,19 +48,16 @@
         this.$refs.generateForm.getData().then(data => {
           // 数据校验成功
           // data 为获取的表单数据
-          alert(data.rate)
-          alert(this.values.email)
+          alert(data.level)
+          alert(data.email)
         }).catch(e => {
-          // 数据校验失败
+          alert(e)
         })
       },
       query() {
         this.values.email = 'isurge@139.com'
       }
-    },
-    created() {
-      // console.log('路由查询参数',this.$tab.query())
-    },
+    }
   }
 </script>
 <style scoped>
