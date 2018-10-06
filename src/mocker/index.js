@@ -1,9 +1,16 @@
+var userEnv = require('./serverData/MainConf')
+
+const {spreadTemp, formTemp1, formTemp2} = require('./serverData/BillTemplate')
+
 const proxy = {
-  'GET /api/user': {id: 1, username: 'kenny', sex: 6 },
-  'GET /api/user/list': [
-    {id: 1, username: 'kenny', sex: 6 },
-    {id: 2, username: 'kenny', sex: 6 }
-  ],
+  'GET /api/userEnv': userEnv,
+  'GET /api/SpreadConfig/:id': spreadTemp,
+  'GET /api/FormConfig/:id': (req, res) => {
+    if (req.params.id=='1')
+      return res.json(formTemp1)
+    else
+      return res.json(formTemp2)
+  },
   'POST /api/login/account': (req, res) => {
     const { password, username } = req.body;
     if (password === '888888' && username === 'admin') {
@@ -23,4 +30,4 @@ const proxy = {
     res.send({ status: 'ok', message: '删除成功！' });
   }
 }
-module.exports = proxy;
+module.exports = proxy

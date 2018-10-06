@@ -1,4 +1,4 @@
-export default {
+module.exports = {
   // 列表配置
   // 菜单列表
   menu: [

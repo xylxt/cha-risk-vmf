@@ -6,8 +6,8 @@ route.install = function (vue) {
   vue.component('hello1', (resolve) => {require.ensure([], ()=>resolve(require('@/Views/hello1.vue')), 'hello1')})
   vue.component('hello2', (resolve) => {require.ensure([], ()=>resolve(require('@/Views/hello2.vue')), 'hello2')})
   vue.component('hello3', (resolve) => {require.ensure([], ()=>resolve(require('@/Views/hello3.vue')), 'hello3')})
-  vue.component('QuickStart', (resolve) => {require.ensure([], ()=>resolve(require('@/Views/QuickStart.vue')), 'QuickStart')})
-  vue.component('GenForm', (resolve) => {require.ensure([], ()=>resolve(require('@/Views/GenForm.vue')), 'GenForm')})	
+  vue.component('SpreadExample', (resolve) => {require.ensure([], ()=>resolve(require('@/Views/SpreadExample.vue')), 'SpreadExample')})
+  vue.component('FormExample', (resolve) => {require.ensure([], ()=>resolve(require('@/Views/FormExample.vue')), 'FormExample')})	
 }
 
 export default route

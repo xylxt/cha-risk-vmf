@@ -1,27 +1,16 @@
 import store from "@/Store";
-import conf from './MainConf'
 import {Base64} from 'js-base64'
 
 export default {
   state: {
-    currentTabIndex: conf.homeTab.menuId, // 当前显示的 tab
-    homeTabMenuId: conf.homeTab.menuId,   // 主页 tab 的 menuId
-    openedTabs: [                         // 当前打开的 tab 列表
-      conf.homeTab
-    ],
+    userEnv: {},
+    currentTabIndex: null,
+    openedTabs: []                         // 当前打开的 tab 列表
   },
   getters: {
-    // 获取 当前显示的 tab name
-    GetCurrentTabIndex (state) {
-      return state.currentTabIndex
-    },
     // 获取 主页 tab 的 menuId
     GetHomeTabMenuId (state) {
-      return state.homeTabMenuId
-    },
-    // 获取 当前打开的 tab 列表
-    GetOpenedTabs (state) {
-      return state.openedTabs
+      return state.userEnv.homeTab.menuId
     },
     // 获取查询参数
     GetQuery (state) {
@@ -41,10 +30,23 @@ export default {
     }
   },
   mutations: {
+    InitUserEnv (state, data) {
+      state.userEnv = { ...state.userEnv, ...data}
+      state.openedTabs.push(data.homeTab)
+      state.currentTabIndex = state.userEnv.homeTab.menuId
+    },
+    RemoveCollect (state, item) {
+      let index = state.userEnv.favor.findIndex((i)=>i.menuId == item.menuId)
+      if (index > -1) state.userEnv.favor.splice(index,1)
+    },
+    AddCollect (state, item) {
+      state.userEnv.favor.push(item)
+    },
     // 设置 hash
     SetHash (state) {
       let cur = state.openedTabs.find(i => i.menuId === state.currentTabIndex)
-      location.hash =  Base64.encode(JSON.stringify(cur))
+      if (cur) 
+      	location.hash =  Base64.encode(JSON.stringify(cur))
     },
     // 设置 主页 tab
     SetHomeTab (state,item) {
@@ -151,6 +153,5 @@ export default {
       state.currentTabIndex = state.homeTabMenuId
       store.commit('SetHash')
     },
-  },
-  actions: {},
+  }
 }

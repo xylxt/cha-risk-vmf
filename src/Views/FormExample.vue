@@ -1,9 +1,12 @@
 <template>
   <div class="wrap">
-    <input type="button" value="查询" @click="query">
-    <input type="button" value="保存" @click="save">
+    <el-row>
+      <el-button type="primary" @click="query" round>查询</el-button>
+      <el-button type="primary" @click="save" round>保存</el-button>
+      <el-button type="primary" @click="swap" round>切换界面</el-button>
+    </el-row>
     <fm-generate-form 
-      :data="jsonData" 
+      :formId="formId" 
       :remote="remoteFuncs" 
       :value="values"
       ref="generateForm">
@@ -12,12 +15,11 @@
 </template>
 <script>
   import GenerateForm from '@/Components/GenerateForm'
-  import form from './form'
 
   export default {
     data() {
       return {
-        jsonData: form.src, // 表单配置中生成的json数据
+        formId: '1', // 单据编号
         values: {'email':'lixintao@chamc.com.cn'}, // 表单需要显示的表单数据
         remoteFuncs: {
           // 组件配置时配置的远端方法,保持和配置时输入的名称一致
@@ -56,6 +58,9 @@
       },
       query() {
         this.values.email = 'isurge@139.com'
+      },
+      swap() {
+        this.formId = '2'
       }
     }
   }

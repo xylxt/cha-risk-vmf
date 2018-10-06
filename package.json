@@ -10,17 +10,18 @@
     "build": "webpack --config ./webpack.config.prod.js"
   },
   "dependencies": {
+    "@grapecity/spread-sheets": "^11.2.2",
+    "@grapecity/spread-sheets-resources-zh": "^11.2.2",
+    "@grapecity/spread-sheets-vue": "^11.2.2",
     "axios": "^0.17.1",
     "babel-polyfill": "^6.26.0",
     "element-ui": "^2.4.0",
     "js-base64": "^2.4.8",
     "miment": "0.0.8",
     "vue": "^2.5.16",
+    "vue-factory": "^0.1.6",
     "vue-router": "^2.5.3",
-    "vuex": "^3.0.1",
-    "@grapecity/spread-sheets": "^11.2.2",
-    "@grapecity/spread-sheets-vue": "^11.2.2",
-    "@grapecity/spread-sheets-resources-zh": "^11.2.2"
+    "vuex": "^3.0.1"
   },
   "devDependencies": {
     "autoprefixer": "^6.4.0",

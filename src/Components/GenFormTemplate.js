@@ -29,7 +29,7 @@ let generateUUID = function() {
 
 let getFormJson = function(src) {
   if (src.flag == 'compact')
-    return transferJson(src)
+    return genFormJson(src)
   else
     return src
 }
@@ -45,7 +45,7 @@ let getItemRules = function(item) {
   return rules
 }
 
-let getItemJson = function(item) {
+let getFormItemJson = function(item) {
   let options = item
   let newItem = {}
   let prototype = basicComponents.filter((component)=> component.type==item.type)[0]
@@ -68,9 +68,9 @@ let getItemJson = function(item) {
     if (item.options) {
       item.options.split(";").forEach((option)=>{
       	let eIndex = option.indexOf(':')
-	let qvalue = option.substr(0,eIndex)
-	let qlabel = option.substr(eIndex + 1)
-	let optionObj = {"value": qvalue, "label": qlabel}
+	      let qvalue = option.substr(0,eIndex)
+	      let qlabel = option.substr(eIndex + 1)
+	      let optionObj = {"value": qvalue, "label": qlabel}
         newItem.options.options.push(optionObj)
       })
       delete item.options
@@ -82,7 +82,34 @@ let getItemJson = function(item) {
   return newItem
 }
 
-let transferJson = function(src) {
+let getSheetItemJson = function(item, size) {
+  let newItem = {}
+
+  newItem.displayName = item.name
+  newItem.name = item.model
+  newItem.size = (item.span?item.span:1)*size
+
+  if (['radio', 'checkbox', 'select'].filter((i)=>i==newItem.type).length > 0){
+    newItem.options.options.length = 0
+    if (item.options) {
+      options = []
+      item.options.split(";").forEach((option)=>{
+        let eIndex = option.indexOf(':')
+        let qvalue = option.substr(0,eIndex)
+        let qlabel = option.substr(eIndex + 1)
+        let optionObj = {"value": qvalue, "text": qlabel}
+        options.push(optionObj)
+      })
+      let combo = new GC.Spread.Sheets.CellTypes.ComboBox()
+      combo.items(options)
+      newItem.cellType = combo
+    }
+  }
+
+  return newItem
+}
+
+let genFormJson = function(src) {
   let target = {"config": null, "list": []}
   let curRow = null
   let colSize = 24/src.cols
@@ -100,11 +127,11 @@ let transferJson = function(src) {
     let curCol = JSON.parse(JSON.stringify(template.column))
     curCol.span = colSize*(item.span?item.span:1)
     curRow.columns.push(curCol)
-    curCol.list.push(getItemJson(item))
+    curCol.list.push(getFormItemJson(item))
     rowUsed += curCol.span
   }
 
   return target
 }
 
-export default getFormJson
+export {getFormJson, getSheetItemJson}

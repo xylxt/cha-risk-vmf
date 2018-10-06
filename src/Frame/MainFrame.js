@@ -10,18 +10,25 @@ import RouterMethods from '@/Router/RouterMethods'
 
 import GC from '@grapecity/spread-sheets'
 import '@grapecity/spread-sheets/styles/gc.spread.sheets.excel2016colorful.css'
-//import GenerateForm from '@/Components/GenerateForm'
+import VueFactory from 'vue-factory'
+import {UserEnvService} from '@/service/UserEnvService'
+import {BillConfigService} from '@/service/BillConfigService'
 
 GC.Spread.Common.CultureManager.culture("zh-cn");
 
 Vue.use(TabRoute)
 Vue.use(RouterMethods)
 Vue.use(ElementUI, {size: 'small'})
+Vue.use(VueFactory)
 
-//Vue.component(GenerateForm.name, GenerateForm)
+Vue.factory.register({
+  'userEnvService': UserEnvService,
+  'billConfigService': BillConfigService
+})
 
 new Vue({
     el: '#app',
     store,
+    providers: ['userEnvService'],
     render: v => v(index)
 })

@@ -41,27 +41,35 @@
 
 <script>
 import GenetateFormItem from './GenerateFormItem.vue'
-import GetFormJson from './FormJson'
+import {getFormJson} from './GenFormTemplate'
 
 export default {
   name: 'fm-generate-form',
   components: {
     GenetateFormItem
   },
-  props: ['data', 'remote', 'value'],
+  props: ['formId', 'remote', 'value'],
   data () {
     return {
-      template: null,
+      template: {'config': {}},
       rules: {}
     }
   },
   created () {
-    this.genTemplate(this.data)
-    this.generateModle(this.template.list)
+    this.initTemplate()
   },
+  providers: ['billConfigService'],
   methods: {
+    initTemplate() {
+      let _this = this
+      this.billConfigService.getFormConfigAR(this.formId).then(function(res){
+        _this.genTemplate(res.data)
+        _this.generateModle(_this.template.list)
+      })
+    },
     genTemplate(data) {
-      this.template = GetFormJson(data)
+      let template = getFormJson(data)
+      this.template = {...this.template, ...template}
     },
     generateModle (genList) {
       for (let i = 0; i < genList.length; i++) {
@@ -88,16 +96,24 @@ export default {
       }
     },
     getData () {
-      let that = this
+      let _this = this
       return new Promise(function(resolve, reject) {
-        that.$children[0].validate(function(valid) {
+        _this.$children[0].validate(function(valid) {
           if (valid) {
-            resolve(that.value)
+            resolve(_this.value)
           } else {
             reject(new Error('表单数据校验失败').message)
           }
         })
       })
+    }
+  },
+  watch: {
+    formId: {
+      deep: false,
+      handler (val) {
+        this.initTemplate()
+      }
     }
   }
 }
