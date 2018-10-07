@@ -29,6 +29,5 @@ Vue.factory.register({
 new Vue({
     el: '#app',
     store,
-    providers: ['userEnvService'],
     render: v => v(index)
 })

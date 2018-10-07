@@ -205,6 +205,7 @@ export default {
   components: {
     NavMenu
   },
+  providers: ['userEnvService'],
 	computed: {
     ...mapState({
       userEnv: state => state.MainStore.userEnv,
@@ -308,7 +309,7 @@ export default {
 	},
   created () {
     let _this = this
-    this.$root.userEnvService.getUserEnvAR().then(function(res){
+    this.userEnvService.getUserEnvAR().then(function(res){
       _this.InitUserEnv(res.data)  
       _this.$tab.reShow()
       _this.listenKeyBoardEvent()
