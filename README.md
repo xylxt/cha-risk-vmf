@@ -3,7 +3,7 @@
 
 # 安装与使用
 1. 安装nodejs与Git
-1. 打开git shell，并进入安装项目文件的目录
+1. 打开git shell，并进入待安装项目文件的目录
 1. git clone https://github.com/xylxt/cha-risk-vmf.git
 1. cd cha-risk-vmf
 1. npm install，获取依赖的包
@@ -12,7 +12,7 @@
 1. 在浏览器中打开 http://127.0.0.1:7120
 
 # 目标
-项目确保实现的主要特性如下：
+项目需要实现的主要特性如下：
 1. 组织机构、人员管理：待实现
 1. 用户、角色、权限管理：待实现
 1. 功能管理（菜单、按键）：部分实现
@@ -40,25 +40,25 @@
 当前项目后端是基于webpack mock api实现，用于前端功能的验证。生产实现中，后端使用restful接口与前端通讯，开发语言没有限制。
 
 # 目录结构
-./dist下为编译后的文件
-./node_modules下为项目的依赖包
-./src下为源代码，其它为配置文件
-./src/Components下为公共的Vue组件
-./src/Frame下为界面主框架实现
-./src/Images下为图标资料
-./src/mocker下为webpack mock api的后端接口实现
-./src/Router下为业务功能模块接口与注册
-./src/Service下为服务的定义与转发实现
-./src/Store下为Vuex store的注册
-./src/Styles下为样式
-./src/Views下为业务功能组件定义
+* ./dist下为编译后的文件
+* ./node_modules下为项目的依赖包
+* ./src下为源代码，其它为配置文件
+* ./src/Components下为公共的Vue组件
+* ./src/Frame下为界面主框架实现
+* ./src/Images下为图标资料
+* ./src/mocker下为webpack mock api的后端接口实现
+* ./src/Router下为业务功能模块接口与注册
+* ./src/Service下为服务的定义与转发实现
+* ./src/Store下为Vuex store的注册
+* ./src/Styles下为样式
+* ./src/Views下为业务功能组件定义
 
 # 开发规范
 进行以下工作实现新功能节点
 1. 在菜单定义中增加一个菜单项，目前通过修改./src/mocker/serverData/MainConf.js文件实现，菜单的component属性指向新开发的组件名称。
 1. 在./src/Views中定义新功能的前端UI，形式为Vue组件。
 1. 在./src/Router/TabRoute.js中注册刚才定义的组件，组件名与菜单中指向的组件名相同。
-1. 为使代码组织的更加有序，并易于测试。如组件需调用后台服务，需使用以下方式。
+1. 为使代码组织的更加有序，并易于测试。如组件需调用后台服务，后台服务的定义与使用需遵循以下规范。
    * 在./src/Service目录下增加新文件进行服务接口的定义与转发实现
    * 接口方法的命名以AR、SR、AL、SL结尾，A代表异步、S代表同步、R代表转发后端、L代表前端实现。异步方法必需返回ES6的promise
    * 在./Frame/MainFrame.js中注册服务
