@@ -18,7 +18,7 @@
             </span>
             <el-dropdown-menu slot="dropdown">
               <el-dropdown-item disabled>我的应用</el-dropdown-item>
-              <el-dropdown-item v-for="(item,index) in config.application"
+              <el-dropdown-item v-for="(item,index) in userEnv.application"
                                 :key="index"
                                 :divided="item.divided">
 
@@ -79,11 +79,11 @@
                 <el-dropdown-menu slot="dropdown">
                   <el-dropdown-item disabled>收藏夹</el-dropdown-item>
 
-                  <el-dropdown-item v-for="(item,index) in config.favor"
+                  <el-dropdown-item v-for="(item,index) in userEnv.favor"
                                     :key="index"
                                     :divided="index === 0">
                     <span @click="openTab(item)">{{item.title}}</span>
-                    <i class="el-icon-close ml10" @click="config.removeCollect(item)"></i>
+                    <i class="el-icon-close ml10" @click="RemoveCollect(item)"></i>
                   </el-dropdown-item>
 
                 </el-dropdown-menu>
@@ -94,7 +94,7 @@
           <!--搜索和收藏 结束-->
           <!--左侧菜单组件-->
           <el-menu :default-active="currentTabIndex" :default-openeds="spreadedMenus">
-            <NavMenu :menuList="menuList" @init_menu="initializeMemu"></NavMenu>
+            <NavMenu :menuList="menuList" @init_menu="initializeMenu"></NavMenu>
           </el-menu>
           <!--左侧菜单组件结束-->
         </aside>
@@ -148,7 +148,7 @@
                           <i class="hx hx-hx_xshuaxin"></i> 刷新
                         </div>
                         <div class="tabDropdownLine"></div>
-                        <div class="tabDropdownFavor" @click="config.addCollect(item)">
+                        <div class="tabDropdownFavor" @click="AddCollect(item)">
                           <i class="hx hx-hx_xshoucang"></i> 收藏
                         </div>
                       </div>
@@ -189,13 +189,12 @@
   </div>
 </template>
 <script>
-import config from './MainConf'
-import NavMenu from '@/Components/NavMenu.vue'
+import {mapState, mapGetters, mapMutations, mapActions} from 'vuex'
+import NavMenu from '@/Components/NavMenu'
 
 export default {
 	data () {
 		return {
-			config: config,          // 全局配置
 			showMenu: true,          // 是否显示左侧菜单
 			fullScreen: false,       // 是否全屏
 			searchText: '',           // 搜索框里的文字
@@ -206,20 +205,16 @@ export default {
   components: {
     NavMenu
   },
+  providers: ['userEnvService'],
 	computed: {
-		// 当前 tab 项的 name
-		currentTabIndex () {
-			return this.$store.getters.GetCurrentTabIndex
-		},
-		// 打开的页签列表
-		openedTabs () {
-			// console.log(this.$store.getters.GetOpenedTabs)
-			return this.$store.getters.GetOpenedTabs
-		},
-    // 主页 tab 的 menuId
-    homeTabMenuId () {
-			return this.$store.getters.GetHomeTabMenuId
-    }
+    ...mapState({
+      userEnv: state => state.MainStore.userEnv,
+      openedTabs: state => state.MainStore.openedTabs,
+      currentTabIndex: state => state.MainStore.currentTabIndex
+    }),
+    ...mapGetters({
+      homeTabMenuId : 'GetHomeTabMenuId'
+    })
 	},
 	watch: {
 		searchText () {
@@ -227,6 +222,7 @@ export default {
 		}
 	},
 	methods: {
+    ...mapMutations(['RemoveCollect', 'AddCollect', 'InitUserEnv']),
 		// 显示/隐藏 主菜单
 		showHideMenu (bool) {
 			this.showMenu = bool
@@ -276,12 +272,12 @@ export default {
 		// 打开 页签
 		openTab (item) {
 			this.$tab.open(item)
-			this.initializeMemu()
+			this.initializeMenu()
 		},
 		// 搜索菜单
 		filterMenu () {
 			let keyword = this.searchText
-			let menu = JSON.parse(JSON.stringify(this.config.menu))
+			let menu = JSON.parse(JSON.stringify(this.userEnv.menu))
 			let newMenu = menu.filter(i => {
         return this.filterMenuImp(i, keyword) > -1
       })
@@ -297,8 +293,8 @@ export default {
         return item.sub.length==0?-1:item.sub.length
       }
     },
-		initializeMemu () {
-			this.menuList = JSON.parse(JSON.stringify(this.config.menu))
+		initializeMenu () {
+			this.menuList = JSON.parse(JSON.stringify(this.userEnv.menu))
 		},
 		// 监听hash的变动
 		listenHistory () {
@@ -315,16 +311,21 @@ export default {
 			})
 		},
 	},
-		created () {
-			this.$tab.reShow()
-			this.listenKeyBoardEvent()
-			this.initializeMemu()
-      this.listenHistory()
-		},
-		mounted () {
-		},
-		beforeDestroy () {
-		}
+  created () {
+    let _this = this
+    this.userEnvService.getUserEnvAR().then(function(res){
+      _this.InitUserEnv(res.data)  
+      _this.$tab.reShow()
+      _this.listenKeyBoardEvent()
+      _this.initializeMenu()
+      _this.listenHistory()
+    })
+	},
+	mounted () {
+
+	},
+	beforeDestroy () {
+	}
 	}
 </script>
 
